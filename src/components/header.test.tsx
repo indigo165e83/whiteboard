@@ -8,10 +8,17 @@ import '@testing-library/jest-dom'
 
 describe('Header component', () => {
   test('renders correctly', () => {
-    const { getByText } = render(<Header />);
+    const { getByText, getByTitle } = render(
+      <Header
+        currentColor="black"
+        callbackOnClick={() => {}}
+        callbackOnChange={() => {}}
+        callbackOnClickTrash={() => {}}
+      />
+    );
 
-    // 指定された要素とクラス名が存在するかをアサーションします
-    expect(getByText('Whiteboard')).toBeInTheDocument();
-    expect(getByText('Whiteboard')).toHaveClass('text-2xl', 'font-bold');
+    expect(getByText('Size')).toBeInTheDocument();
+    expect(getByText('Color')).toBeInTheDocument();
+    expect(getByTitle('Clear canvas')).toBeInTheDocument();
   });
 });
