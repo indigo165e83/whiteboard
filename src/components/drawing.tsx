@@ -11,14 +11,10 @@ type DrawingProps = {
 export default function Drawing(props: DrawingProps) {
   const {headerHeight, currentSize, currentColor, toggleDelete} = props
   const [isDrawing, setIsDrawing] = useState(false);
-  //trailは、オブジェクト型{ x: number; y: number; }[]の配列
-  //useStateの初期値として、[]（空の配列）を渡す
   const [trail, setTrail] = useState<{ x: number; y: number; size: number; color: string }[]>([]);
 
   useEffect(() => {
-    //Trashボタンが押され状態が変わったら、軌跡の配列をクリアする
     setTrail([])
-    // This runs on mount *and also* if toggleDelete have changed since the last render
   }, [toggleDelete]);
 
   const handlePointerMove = ((e: React.PointerEvent<HTMLDivElement>) => {
@@ -42,15 +38,26 @@ export default function Drawing(props: DrawingProps) {
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      className="cursor-crosshair select-none"
       style={{
         position: 'relative',
         width: '100vw',
         height: '100vh',
+        background: 'linear-gradient(135deg, #fafbff 0%, #f1f5f9 50%, #f8fafc 100%)',
       }}>
+
+      {/* Subtle grid pattern */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.35]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #cbd5e1 0.5px, transparent 0.5px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
 
       {trail.map((point, index) => {
         if (index === 0) {
-          return null; // 最初の座標点は線を描画しない
+          return null;
         }
 
         const prevPoint = trail[index - 1];
